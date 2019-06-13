@@ -1,6 +1,8 @@
+
 <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Condensed" rel="stylesheet"> 
+
 <style type="text/css">
-	div{
+	/*div{
 		position: absolute;
 		top: 35%;
 		bottom: 65%;
@@ -19,24 +21,27 @@
 	}
 	.custom{
 		font-family: 'Encode Sans Condensed', sans-serif;
-	}
+	}*/
 </style>
+
 <div>
-<h4>Shorten URL</h4>
+	<h4>Shorten URL</h4>
 
-{% if error_message %}
-	<p><strong>{{ error_message }}</strong></p>
-{% endif %}
+	{% if error_message %}
+		<p><strong>{{ error_message }}</strong></p>
+	{% endif %}
 
-<form action="{% url 'shrink' %}" method="get">
-	{% csrf_token %}
-	<input type="text" name="url" class="custom"><br/><br/>
-	<input type="submit" value="Submit" />
-</form>
+	<form action="{% url 'shrink' %}" method="get">
+		{% csrf_token %}
+		<span>Origninal URL : </span><input type="text" name="url" class="custom" required><br><br>
+		<span>Custom URL : </span><input type="text" name="c_url" class="custom" maxlength="8" placeholder=" Size not more than 8 characters"><br>
+		<br><br>
+		<input type="submit" value="Submit" />
+	</form>
 
-{% if shrinked_url %} 
-	<span class="custom">
-		Shortened URL: <strong><a href="http://localhost:8000/{{shrinked_url}}">http://localhost:8000/{{shrinked_url}}</a></strong> 
-	</span>
-{% endif %}
+	{% if shrinked_url %} 
+		<span class="custom">
+			Shortened URL: <strong><a href="http://localhost:8000/{{shrinked_url}}">http://localhost:8000/{{shrinked_url}}</a></strong> 
+		</span>
+	{% endif %}
 </div>
