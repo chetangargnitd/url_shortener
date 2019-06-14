@@ -12,7 +12,8 @@ import hashlib
 
 
 def home(request):
-	return render(request, 'shorten/index.html')
+	context = URLs.objects.order_by('-created')[:5]
+	return render(request, 'shorten/index.html', {'context' : context})
 
 
 def shrink(request):
@@ -22,21 +23,21 @@ def shrink(request):
 	encoded_url = url.encode('utf-8')
 	hashObject = hashlib.md5(encoded_url)
 	shrinked_url = hashObject.hexdigest()[:8]
-
+	context = URLs.objects.order_by('-created')[:5]
 	if(c_url == ""):
 		try:
 			check = URLs.objects.get(shrinked_url = shrinked_url)
 		except URLs.DoesNotExist:
 			entry = URLs(shrinked_url = shrinked_url, original_url = url)
 			entry.save()
-		return render(request, 'shorten/index.html', {'shrinked_url' : shrinked_url})
+		return render(request, 'shorten/index.html', {'shrinked_url' : shrinked_url, 'context' : context})
 	else:
 		try:
 			check = URLs.objects.get(shrinked_url = c_url)
 		except URLs.DoesNotExist:
 			entry = URLs(shrinked_url = c_url, original_url = url)
 			entry.save()
-		return render(request, 'shorten/index.html', {'shrinked_url' : c_url})
+		return render(request, 'shorten/index.html', {'shrinked_url' : c_url, 'context' : context})
 
 def retrieve(request, id):
 	target = get_object_or_404(URLs, shrinked_url = id)
